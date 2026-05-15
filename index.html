@@ -3,20 +3,774 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>awarself</title>
-<meta name="description" content="Indie Android apps by awarself." />
-<meta http-equiv="refresh" content="0; url=https://prash5t.github.io/indie-apps-policies/" />
-<link rel="canonical" href="https://prash5t.github.io/indie-apps-policies/" />
+<meta name="theme-color" content="#06080F" />
+<title>awarself · tiny apps, big personality</title>
+<meta name="description" content="Indie Android apps by awarself — hand-built with Flutter, ad-supported, designed to feel a little extra." />
+<meta property="og:title" content="awarself · tiny apps, big personality" />
+<meta property="og:description" content="Indie Android apps by awarself — hand-built with Flutter, ad-supported, designed to feel a little extra." />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://prash5t.github.io/" />
+<link rel="canonical" href="https://prash5t.github.io/" />
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%23B8A6FF'/%3E%3Cstop offset='100%25' stop-color='%236B4FE8'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='32' height='32' rx='8' fill='url(%23g)'/%3E%3C/svg%3E" />
 <style>
-  body { font-family: -apple-system, BlinkMacSystemFont, "Inter", "Segoe UI", Roboto, sans-serif; background: #0B0B1F; color: #F0EDFF; margin: 0; padding: 56px 24px; line-height: 1.65; }
-  main { max-width: 600px; margin: 0 auto; }
-  a { color: #B8A6FF; }
+:root {
+  --bg-base: #06080F;
+  --bg-tint-1: rgba(184, 166, 255, 0.24);
+  --bg-tint-2: rgba(200, 255, 62, 0.14);
+  --bg-tint-3: rgba(244, 114, 182, 0.20);
+  --bg-tint-4: rgba(34, 211, 238, 0.16);
+
+  --glass-surface: rgba(255, 255, 255, 0.05);
+  --glass-surface-hover: rgba(255, 255, 255, 0.08);
+  --glass-border: rgba(255, 255, 255, 0.10);
+  --glass-border-hover: rgba(255, 255, 255, 0.20);
+  --glass-specular: rgba(255, 255, 255, 0.14);
+
+  --text: #F5F5F7;
+  --text-secondary: rgba(245, 245, 247, 0.64);
+  --text-tertiary: rgba(245, 245, 247, 0.40);
+
+  --pill-bg: rgba(255, 255, 255, 0.06);
+  --pill-bg-hover: rgba(255, 255, 255, 0.12);
+  --pill-border: rgba(255, 255, 255, 0.10);
+
+  --accent-live: #34D399;
+  --accent-review: #FCD34D;
+  --accent-soon: #A78BFA;
+
+  --max-width: 1080px;
+  --radius-card: 26px;
+  --radius-pill: 999px;
+  --radius-icon: 18px;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; scroll-behavior: smooth; }
+
+body {
+  background: var(--bg-base);
+  color: var(--text);
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text",
+    "Inter", "Segoe UI", Roboto, system-ui, sans-serif;
+  font-size: 17px;
+  font-weight: 400;
+  line-height: 1.55;
+  letter-spacing: -0.01em;
+  min-height: 100vh;
+  position: relative;
+  overflow-x: hidden;
+}
+
+/* Animated background orbs */
+body::before {
+  content: "";
+  position: fixed;
+  inset: -10%;
+  z-index: -2;
+  pointer-events: none;
+  background:
+    radial-gradient(circle at 12% 10%, var(--bg-tint-1), transparent 38%),
+    radial-gradient(circle at 88% 22%, var(--bg-tint-3), transparent 35%),
+    radial-gradient(circle at 75% 92%, var(--bg-tint-2), transparent 40%),
+    radial-gradient(circle at 8% 88%, var(--bg-tint-4), transparent 36%);
+  filter: blur(56px);
+  animation: orb-drift 28s ease-in-out infinite alternate;
+  transform: translateZ(0);
+}
+
+/* Subtle grain for warmth */
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  opacity: 0.035;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+@keyframes orb-drift {
+  0%   { transform: translate3d(0, 0, 0) scale(1); }
+  50%  { transform: translate3d(-2%, 2%, 0) scale(1.04); }
+  100% { transform: translate3d(2%, -2%, 0) scale(1.02); }
+}
+
+main {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: clamp(48px, 8vw, 96px) clamp(20px, 4vw, 36px) 80px;
+}
+
+/* ---------------- Hero ---------------- */
+
+header.hero {
+  margin-bottom: clamp(56px, 9vw, 96px);
+}
+
+.brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 16px 8px 8px;
+  background: var(--glass-surface);
+  backdrop-filter: blur(24px) saturate(180%);
+  -webkit-backdrop-filter: blur(24px) saturate(180%);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-pill);
+  box-shadow:
+    inset 0 1px 0 var(--glass-specular),
+    0 4px 16px rgba(0, 0, 0, 0.18);
+  margin-bottom: 32px;
+}
+
+.brand-mark {
+  width: 28px;
+  height: 28px;
+  border-radius: 9px;
+  background: linear-gradient(135deg, #B8A6FF, #8B7FFF 60%, #6B4FE8);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.45), 0 2px 8px rgba(107, 79, 232, 0.45);
+  flex-shrink: 0;
+}
+
+.brand-name {
+  font-size: 15px;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  color: var(--text-secondary);
+}
+
+h1 {
+  font-size: clamp(44px, 7.4vw, 88px);
+  font-weight: 600;
+  letter-spacing: -0.04em;
+  line-height: 1.02;
+  margin-bottom: 22px;
+  background: linear-gradient(180deg, #FFFFFF 0%, rgba(255, 255, 255, 0.68) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  max-width: 14ch;
+}
+
+h1 .accent {
+  background: linear-gradient(120deg, #B8A6FF 0%, #F472B6 50%, #C8FF3E 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+p.lede {
+  color: var(--text-secondary);
+  font-size: clamp(17px, 2vw, 21px);
+  font-weight: 400;
+  max-width: 56ch;
+  line-height: 1.5;
+  margin-bottom: 28px;
+}
+
+.stat-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.stat-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 7px 14px;
+  background: var(--pill-bg);
+  border: 1px solid var(--pill-border);
+  border-radius: var(--radius-pill);
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-secondary);
+  letter-spacing: -0.005em;
+}
+
+.stat-pill .dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: currentColor;
+  opacity: 0.7;
+}
+
+/* ---------------- Section header ---------------- */
+
+.section-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin-bottom: 28px;
+  gap: 16px;
+}
+
+.section-eyebrow {
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+}
+
+h2 {
+  font-size: clamp(28px, 4vw, 40px);
+  font-weight: 600;
+  letter-spacing: -0.025em;
+  line-height: 1.1;
+  margin-top: 8px;
+}
+
+.section-sub {
+  color: var(--text-secondary);
+  font-size: 15px;
+  max-width: 32ch;
+  text-align: right;
+}
+
+/* ---------------- App grid ---------------- */
+
+.app-grid {
+  display: grid;
+  gap: 20px;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+}
+
+.app-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  color: var(--text);
+  background: var(--glass-surface);
+  backdrop-filter: blur(40px) saturate(180%);
+  -webkit-backdrop-filter: blur(40px) saturate(180%);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-card);
+  padding: 26px 26px 22px;
+  overflow: hidden;
+  isolation: isolate;
+  box-shadow:
+    inset 0 1px 0 var(--glass-specular),
+    0 1px 2px rgba(0, 0, 0, 0.18),
+    0 14px 40px rgba(0, 0, 0, 0.24);
+  transition:
+    transform 0.35s cubic-bezier(0.2, 0.8, 0.2, 1),
+    border-color 0.25s ease,
+    background 0.25s ease,
+    box-shadow 0.35s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.app-card::before {
+  content: "";
+  position: absolute;
+  top: -40%;
+  left: -10%;
+  width: 70%;
+  height: 80%;
+  background: var(--accent-glow, radial-gradient(circle, rgba(184, 166, 255, 0.18), transparent 60%));
+  filter: blur(40px);
+  pointer-events: none;
+  z-index: -1;
+  opacity: 0.9;
+  transition: opacity 0.3s ease;
+}
+
+.app-card:hover {
+  background: var(--glass-surface-hover);
+  border-color: var(--glass-border-hover);
+  transform: translateY(-2px);
+  box-shadow:
+    inset 0 1px 0 var(--glass-specular),
+    0 1px 2px rgba(0, 0, 0, 0.18),
+    0 22px 56px rgba(0, 0, 0, 0.32);
+}
+
+.app-card:hover::before { opacity: 1; }
+
+.app-card-head {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 14px;
+}
+
+.app-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  flex-shrink: 0;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.32),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.2),
+    0 4px 14px rgba(0, 0, 0, 0.28);
+}
+
+.app-text {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  gap: 2px;
+  flex: 1;
+}
+
+.app-name {
+  font-size: 18px;
+  font-weight: 600;
+  letter-spacing: -0.018em;
+  line-height: 1.2;
+}
+
+.app-subtitle {
+  font-size: 13px;
+  font-weight: 400;
+  color: var(--text-secondary);
+  letter-spacing: -0.005em;
+  line-height: 1.2;
+}
+
+.status {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  font-size: 10.5px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  border-radius: var(--radius-pill);
+  flex-shrink: 0;
+  white-space: nowrap;
+}
+
+.status .dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: currentColor;
+}
+
+.status.live {
+  color: var(--accent-live);
+  background: rgba(52, 211, 153, 0.10);
+  border: 1px solid rgba(52, 211, 153, 0.30);
+}
+.status.live .dot {
+  animation: pulse 1.8s ease-in-out infinite;
+  box-shadow: 0 0 0 0 rgba(52, 211, 153, 0.7);
+}
+@keyframes pulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(52, 211, 153, 0.7); }
+  50%      { box-shadow: 0 0 0 5px rgba(52, 211, 153, 0); }
+}
+
+.status.review {
+  color: var(--accent-review);
+  background: rgba(252, 211, 77, 0.10);
+  border: 1px solid rgba(252, 211, 77, 0.30);
+}
+
+.status.soon {
+  color: var(--accent-soon);
+  background: rgba(167, 139, 250, 0.10);
+  border: 1px solid rgba(167, 139, 250, 0.28);
+}
+
+.app-tagline {
+  color: var(--text-secondary);
+  font-size: 14.5px;
+  line-height: 1.5;
+  margin-bottom: 18px;
+  flex: 1;
+}
+
+.app-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 14px;
+}
+
+.cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  color: #0B0B14;
+  text-decoration: none;
+  padding: 9px 16px;
+  background: linear-gradient(180deg, #FFFFFF 0%, #E5E5EA 100%);
+  border-radius: var(--radius-pill);
+  letter-spacing: -0.005em;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.6),
+    0 4px 14px rgba(255, 255, 255, 0.12);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.cta:hover {
+  transform: translateY(-1px);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.6),
+    0 6px 20px rgba(255, 255, 255, 0.18);
+}
+
+.cta svg { display: block; }
+
+.policy-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  padding-top: 14px;
+  border-top: 1px solid var(--glass-border);
+}
+
+.policy-links a {
+  display: inline-flex;
+  align-items: center;
+  font-size: 11.5px;
+  font-weight: 500;
+  color: var(--text-tertiary);
+  text-decoration: none;
+  padding: 4px 10px;
+  background: var(--pill-bg);
+  border: 1px solid var(--pill-border);
+  border-radius: var(--radius-pill);
+  transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+  letter-spacing: -0.005em;
+}
+
+.policy-links a:hover,
+.policy-links a:focus-visible {
+  background: var(--pill-bg-hover);
+  border-color: var(--glass-border-hover);
+  color: var(--text);
+  outline: none;
+}
+
+/* ---------------- Per-app accents ---------------- */
+
+.icon-dream { background: linear-gradient(135deg, #B8A6FF, #8B7FFF 55%, #6B4FE8); }
+.card-dream { --accent-glow: radial-gradient(circle, rgba(184, 166, 255, 0.24), transparent 60%); }
+
+.icon-vparty { background: linear-gradient(135deg, #67E8F9, #22D3EE 55%, #0EA5E9); }
+.card-vparty { --accent-glow: radial-gradient(circle, rgba(34, 211, 238, 0.24), transparent 60%); }
+
+.icon-kpop { background: linear-gradient(135deg, #FBB6CE, #F472B6 55%, #BE185D); }
+.card-kpop { --accent-glow: radial-gradient(circle, rgba(244, 114, 182, 0.24), transparent 60%); }
+
+.icon-salary { background: linear-gradient(135deg, #ECFCCB, #C8FF3E 55%, #7DB832); color: #0B0B14; }
+.card-salary { --accent-glow: radial-gradient(circle, rgba(200, 255, 62, 0.22), transparent 60%); }
+
+.icon-excuse { background: linear-gradient(135deg, #F4ECD8, #E8B73E 55%, #7CA982); }
+.card-excuse { --accent-glow: radial-gradient(circle, rgba(232, 183, 62, 0.26), transparent 60%); }
+
+/* ---------------- About ---------------- */
+
+section.about {
+  margin-top: clamp(64px, 10vw, 112px);
+  padding: clamp(32px, 5vw, 56px);
+  background: var(--glass-surface);
+  backdrop-filter: blur(40px) saturate(180%);
+  -webkit-backdrop-filter: blur(40px) saturate(180%);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-card);
+  box-shadow:
+    inset 0 1px 0 var(--glass-specular),
+    0 14px 40px rgba(0, 0, 0, 0.22);
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+}
+
+section.about::before {
+  content: "";
+  position: absolute;
+  top: -30%;
+  right: -10%;
+  width: 50%;
+  height: 80%;
+  background: radial-gradient(circle, rgba(184, 166, 255, 0.18), transparent 65%);
+  filter: blur(48px);
+  z-index: -1;
+  pointer-events: none;
+}
+
+.about-grid {
+  display: grid;
+  gap: 32px;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+}
+
+@media (max-width: 720px) {
+  .about-grid { grid-template-columns: 1fr; }
+}
+
+.about-grid h2 { margin-top: 4px; }
+
+.about-body p {
+  color: var(--text-secondary);
+  font-size: 15.5px;
+  line-height: 1.6;
+  margin-bottom: 14px;
+}
+
+.about-body p:last-child { margin-bottom: 0; }
+
+.about-body strong {
+  color: var(--text);
+  font-weight: 500;
+}
+
+/* ---------------- Footer ---------------- */
+
+footer {
+  margin-top: clamp(56px, 8vw, 96px);
+  padding-top: 28px;
+  border-top: 1px solid var(--glass-border);
+  color: var(--text-tertiary);
+  font-size: 13.5px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  letter-spacing: -0.005em;
+}
+
+footer a {
+  color: var(--text-secondary);
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+footer a:hover { color: var(--text); }
+
+footer .links {
+  display: flex;
+  gap: 18px;
+  flex-wrap: wrap;
+}
+
+/* ---------------- Mobile polish ---------------- */
+
+@media (max-width: 600px) {
+  body { font-size: 16px; }
+  main { padding: 36px 18px 56px; }
+  .app-card { padding: 22px 22px 18px; }
+  section.about { padding: 28px 22px; }
+  .section-head { flex-direction: column; align-items: flex-start; }
+  .section-sub { text-align: left; }
+  .app-card-head { flex-wrap: wrap; }
+}
+
+/* Light mode */
+@media (prefers-color-scheme: light) {
+  :root {
+    --bg-base: #F2F2F7;
+    --bg-tint-1: rgba(139, 127, 255, 0.32);
+    --bg-tint-2: rgba(125, 184, 50, 0.22);
+    --bg-tint-3: rgba(190, 24, 93, 0.18);
+    --bg-tint-4: rgba(14, 165, 233, 0.20);
+
+    --glass-surface: rgba(255, 255, 255, 0.55);
+    --glass-surface-hover: rgba(255, 255, 255, 0.72);
+    --glass-border: rgba(0, 0, 0, 0.08);
+    --glass-border-hover: rgba(0, 0, 0, 0.16);
+    --glass-specular: rgba(255, 255, 255, 0.6);
+
+    --text: #0B0B14;
+    --text-secondary: rgba(11, 11, 20, 0.66);
+    --text-tertiary: rgba(11, 11, 20, 0.44);
+
+    --pill-bg: rgba(255, 255, 255, 0.55);
+    --pill-bg-hover: rgba(255, 255, 255, 0.85);
+    --pill-border: rgba(0, 0, 0, 0.08);
+  }
+  h1 {
+    background: linear-gradient(180deg, #0B0B14 0%, rgba(11, 11, 20, 0.78) 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .cta {
+    color: #FFFFFF;
+    background: linear-gradient(180deg, #1C1C2E 0%, #0B0B14 100%);
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.12),
+      0 4px 14px rgba(0, 0, 0, 0.18);
+  }
+  .cta:hover {
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.12),
+      0 6px 20px rgba(0, 0, 0, 0.24);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  body::before { animation: none; }
+  .app-card,
+  .app-card::before,
+  .policy-links a,
+  .cta { transition: none !important; }
+  .app-card:hover { transform: none; }
+  .cta:hover { transform: none; }
+  .status.live .dot { animation: none; }
+}
 </style>
 </head>
 <body>
 <main>
-  <h1>awarself</h1>
-  <p>Indie Android apps. See <a href="https://prash5t.github.io/indie-apps-policies/">app policies</a>.</p>
+
+  <header class="hero">
+    <div class="brand">
+      <div class="brand-mark" aria-hidden="true"></div>
+      <span class="brand-name">awarself</span>
+    </div>
+    <h1>tiny apps,<br /><span class="accent">big personality.</span></h1>
+    <p class="lede">Indie Android apps, hand-built one at a time. Every haptic tuned, every animation eased, every empty state given a personality. Ad-supported, never paywalled.</p>
+    <div class="stat-row">
+      <span class="stat-pill"><span class="dot"></span>5 apps in flight</span>
+      <span class="stat-pill"><span class="dot"></span>Android · Flutter</span>
+      <span class="stat-pill"><span class="dot"></span>Ads-only, no IAP</span>
+      <span class="stat-pill"><span class="dot"></span>Solo studio</span>
+    </div>
+  </header>
+
+  <section id="apps">
+    <div class="section-head">
+      <div>
+        <div class="section-eyebrow">The shelf</div>
+        <h2>Apps shipping under awarself</h2>
+      </div>
+      <p class="section-sub">Each one tries to do one small thing really well, with a sense of humor about it.</p>
+    </div>
+
+    <div class="app-grid">
+
+      <article class="app-card card-dream">
+        <div class="app-card-head">
+          <div class="app-icon icon-dream" aria-hidden="true">🌙</div>
+          <div class="app-text">
+            <div class="app-name">Lucid</div>
+            <div class="app-subtitle">Dream Journal</div>
+          </div>
+          <span class="status live" aria-label="Live on Google Play"><span class="dot"></span>Live</span>
+        </div>
+        <p class="app-tagline">A private dream journal with AI interpretation, pattern analysis, and cloud sync. Built for the half-remembered.</p>
+        <div class="app-actions">
+          <a class="cta" href="https://play.google.com/store/apps/details?id=com.awarself.dreamjournal" target="_blank" rel="noopener">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M3.6 1.9c-.4.3-.6.8-.6 1.4v17.4c0 .6.2 1.1.6 1.4l9.9-10.1L3.6 1.9zm11.1 11.3l2.6 2.6-12.7 7.3 10.1-9.9zm5.5-2.5l-3.1-1.8-3 3 3 3 3.1-1.8c1-.6 1-2.1 0-2.4zM5.1 1.5l12.7 7.3-2.6 2.6L5.1 1.5z"/></svg>
+            Get on Play
+          </a>
+        </div>
+        <div class="policy-links">
+          <a href="indie-apps-policies/dream_journal/privacy.html">Privacy</a>
+          <a href="indie-apps-policies/dream_journal/terms.html">Terms</a>
+          <a href="indie-apps-policies/dream_journal/delete-account.html">Delete account</a>
+        </div>
+      </article>
+
+      <article class="app-card card-salary">
+        <div class="app-card-head">
+          <div class="app-icon icon-salary" aria-hidden="true">💸</div>
+          <div class="app-text">
+            <div class="app-name">Salary Countdown</div>
+            <div class="app-subtitle">Broke-O-Meter</div>
+          </div>
+          <span class="status review"><span class="dot"></span>In review</span>
+        </div>
+        <p class="app-tagline">Track your paycheck. Get roasted. A sarcastic payday tracker that judges your cycle and hands out trophies for surviving it.</p>
+        <div class="policy-links">
+          <a href="indie-apps-policies/salary_countdown/privacy-policy.html">Privacy</a>
+          <a href="indie-apps-policies/salary_countdown/account-deletion.html">Delete account</a>
+          <a href="indie-apps-policies/salary_countdown/in-app-economy.html">In-app economy</a>
+        </div>
+      </article>
+
+      <article class="app-card card-excuse">
+        <div class="app-card-head">
+          <div class="app-icon icon-excuse" aria-hidden="true">🧞</div>
+          <div class="app-text">
+            <div class="app-name">Excuse Genie</div>
+            <div class="app-subtitle">Funny &amp; Smooth</div>
+          </div>
+          <span class="status review"><span class="dot"></span>In review</span>
+        </div>
+        <p class="app-tagline">AI excuses for every awkward moment. Stuck at work? Skipping the gym? The genie's already typing.</p>
+        <div class="policy-links">
+          <a href="indie-apps-policies/excuse_genie/privacy-policy.html">Privacy</a>
+          <a href="indie-apps-policies/excuse_genie/account-deletion.html">Delete account</a>
+          <a href="indie-apps-policies/excuse_genie/in-app-economy.html">In-app economy</a>
+        </div>
+      </article>
+
+      <article class="app-card card-vparty">
+        <div class="app-card-head">
+          <div class="app-icon icon-vparty" aria-hidden="true">⚡</div>
+          <div class="app-text">
+            <div class="app-name">VParty</div>
+            <div class="app-subtitle">Vibrating Party</div>
+          </div>
+          <span class="status soon"><span class="dot"></span>Soon</span>
+        </div>
+        <p class="app-tagline">One phone performs, every phone feels it — synced haptic, sound, and light parties. Solo, LAN, or one shared global stage.</p>
+        <div class="policy-links">
+          <a href="indie-apps-policies/vparty/privacy-policy.html">Privacy</a>
+          <a href="indie-apps-policies/vparty/account-deletion.html">Delete account</a>
+          <a href="indie-apps-policies/vparty/in-app-economy.html">In-app economy</a>
+        </div>
+      </article>
+
+      <article class="app-card card-kpop">
+        <div class="app-card-head">
+          <div class="app-icon icon-kpop" aria-hidden="true">🎵</div>
+          <div class="app-text">
+            <div class="app-name">KpopChat</div>
+            <div class="app-subtitle">Fan personas + news</div>
+          </div>
+          <span class="status soon"><span class="dot"></span>Soon</span>
+        </div>
+        <p class="app-tagline">Chat with AI K-pop fan personas, see fans on a world map, and follow a live news feed for your bias.</p>
+        <div class="policy-links">
+          <a href="indie-apps-policies/kpopchat/privacy-policy.html">Privacy</a>
+          <a href="indie-apps-policies/kpopchat/account-deletion.html">Delete account</a>
+          <a href="indie-apps-policies/kpopchat/in-app-economy.html">In-app economy</a>
+        </div>
+      </article>
+
+    </div>
+  </section>
+
+  <section class="about" id="about">
+    <div class="about-grid">
+      <div>
+        <div class="section-eyebrow">About</div>
+        <h2>One person.<br />One app shelf.</h2>
+      </div>
+      <div class="about-body">
+        <p><strong>awarself</strong> is a solo indie shop making small Android apps that try to feel a little extra — micro-interactions where you don't expect them, copy that has opinions, haptics tuned by ear.</p>
+        <p>No subscriptions. No paywalls. No tracking-for-resale. Apps are free, supported by ads, and the in-app coins you earn are just for fun.</p>
+        <p>Questions, bug reports, or just wanna say hi — <a href="mailto:awarself@gmail.com">awarself@gmail.com</a>.</p>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div>&copy; awarself · made with care</div>
+    <div class="links">
+      <a href="indie-apps-policies/">All policies</a>
+      <a href="mailto:awarself@gmail.com">Contact</a>
+      <a href="https://github.com/prash5t" target="_blank" rel="noopener">GitHub</a>
+    </div>
+  </footer>
+
 </main>
 </body>
 </html>
