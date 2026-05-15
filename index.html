@@ -307,8 +307,12 @@ footer {
   border-top: 1px solid var(--glass-border);
   color: var(--text-tertiary);
   font-size: 13px;
-  text-align: center;
   letter-spacing: -0.005em;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 14px;
+  flex-wrap: wrap;
 }
 
 footer a {
@@ -318,6 +322,11 @@ footer a {
 }
 
 footer a:hover { color: var(--text); }
+
+footer .sep {
+  opacity: 0.4;
+  user-select: none;
+}
 
 /* ---------------- Mobile polish ---------------- */
 
@@ -475,6 +484,8 @@ footer a:hover { color: var(--text); }
   </section>
 
   <footer>
+    <a href="https://ghimireprashant.com.np" target="_blank" rel="noopener">Portfolio</a>
+    <span class="sep" aria-hidden="true">·</span>
     <a href="https://prash5t.github.io/indie-apps-policies/">All policies</a>
   </footer>
 
